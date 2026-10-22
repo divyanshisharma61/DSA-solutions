@@ -1,44 +1,45 @@
 class Solution {
 public:
     int minEatingSpeed(vector<int>& piles, int h) {
-        long long start = 0;int end;
-        int ans;
-        int mid;
-        int n = piles.size();
-        for(int i =0;i<n;i++){
-            start +=piles[i];
-            end = max(end,piles[i]);
+        long long low = 1;
+        long long high = 0;
+        for(int x:piles){
+            high = high +x;
+
         }
-        start = start/h;
-        if(!start)
-        start = 1;
 
-        while(start<=end){
-
-            mid = start +(end-start)/2;
-            int total_time = 0;
-            for(int i = 0;i<n;i++){
-                total_time += piles[i]/mid; 
-                if(piles[i]%mid){
-                    total_time++;
-                }
-            }
-            if(total_time>h){
-                start = mid+1;
-
+        while(low<=high){
+            long long mid = low +(high-low)/2;
+            if(isvalid(piles,h,mid)){
+                high = mid-1;
             }
             else{
-                ans = mid;
-                end = mid-1;
+                low = mid +1;
+            }
+        }
+        return low;
+    }
+
+    bool isvalid(vector<int>& piles,int h,int speed){
+        int noofhour = 0;
+        for(int x:piles){
+            if(x%speed==0){
+                noofhour = noofhour + x/speed;
             }
 
+            else{
+                noofhour = noofhour + (x/speed) + 1;
+            }
 
-
-
-        }return ans;
-
-
-
-        
+        }return noofhour<=h;
     }
+
+
+
+
+
+
+
+
+
 };
